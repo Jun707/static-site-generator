@@ -1,7 +1,8 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
+#total of 8 unit tests
 class TestHTMLNode(unittest.TestCase):
 
     def test_props_to_html(self):
@@ -21,6 +22,56 @@ class TestHTMLNode(unittest.TestCase):
         props = {"href": "https://www.google.com"}
         node = LeafNode("a", "Google.com", props)
         self.assertEqual(node.to_html(), '<a href="https://www.google.com">Google.com</a>')
+
+    def test_parentNode_to_html_leafNode_case(self):
+        node = ParentNode(
+            "p",
+            None,
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(node.to_html(), '<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>')
+    
+    def test_parentNode_to_html_leafNode_with_props(self):
+        props = {"href": "https://www.google.com"}
+        node = ParentNode(
+            "p",
+            None,
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("a", "Google.com", props)
+            ],
+        )
+        self.assertEqual(node.to_html(), '<p><b>Bold text</b>Normal text<i>italic text</i>Normal text<a href="https://www.google.com">Google.com</a></p>')
+        
+    
+    def test_parentNode_to_html_parentNode_nesting(self):
+        node = ParentNode(
+            "div",
+            None,
+            [
+                ParentNode(
+                    "p",
+                    None,
+                    [
+                        LeafNode("b", "Bold text"),
+                        LeafNode(None, "Normal text"),
+                        LeafNode("i", "italic text"),
+                        LeafNode(None, "Normal text"),
+                    ]
+                ),
+                LeafNode("div", "end of text")
+            ],
+        )
+        self.assertEqual(node.to_html(), '<div><p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p><div>end of text</div></div>')
+
 
 if __name__ == "__main__":
     unittest.main()
