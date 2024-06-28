@@ -29,7 +29,6 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", "bold", "https://www.google.com")
         self.assertNotEqual(node, node2)
 
-
     def test_repr(self):
         node = TextNode("This is a text node", "bold", "https://www.google.com")
         self.assertEqual("TextNode(This is a text node, bold, https://www.google.com)", repr(node))
