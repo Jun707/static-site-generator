@@ -32,24 +32,3 @@ def text_node_to_html_node(text_node):
     elif text_node.text_type == text_type_image:
         return LeafNode("img", None, {"src": text_node.url, "alt": text_node.text})
     raise ValueError(f"Invalid text type: {text_node.text_type}")
-
-def split_nodes_delimiter(old_nodes, delimiter, text_node):
-    res = []
-    for node in old_nodes:
-        if node.text_type != text_type_text:
-            res.append(node)
-            continue
-        sub_string = []
-        delimiter_section = node.text.split(delimiter)
-        if len(delimiter_section) == 0:
-            raise Exception("Missing closing delimiter")
-        for i in range(len(delimiter_section)):
-            if delimiter_section[i] == "":
-                continue
-            if i % 2 == 0:
-                sub_string.append(TextNode(delimiter_section[i], text_type_text))
-            else:
-                sub_string.append(TextNode(delimiter_section[i], text_node))
-        res.extend(sub_string)
-
-    return res

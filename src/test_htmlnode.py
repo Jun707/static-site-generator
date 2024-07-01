@@ -2,7 +2,6 @@ import unittest
 
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
-#total of 8 unit tests
 class TestHTMLNode(unittest.TestCase):
 
     def test_props_to_html(self):
