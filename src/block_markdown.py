@@ -16,7 +16,6 @@ def markdown_to_blocks(markdown: str):
         temp = s.strip()
         if temp:
             res.append(temp)
-    print(res)
     return res
 
 def block_to_block_type(block: str):
@@ -40,6 +39,7 @@ def markdown_to_html_node(markdown: str):
     for block in blocks:
         html_node = block_to_html_node(block)
         children.append(html_node)
+        print(children)
     return ParentNode("div", children, None)
 
 def block_to_html_node(block: str):
@@ -48,6 +48,13 @@ def block_to_html_node(block: str):
         return paragraph_block_type_to_html_node(block)
     if block_type == block_type_heading:
         return heading_block_type_to_html_node(block)
+    if block_type == block_type_quote(block):
+        return quote_block_type_to_html_node(block)
+    if block_type == block_type_unordered_list(block):
+        return ul_block_type_to_html_node(block)
+    if block_type == block_type_ordered_list(block):
+        return ol_block_type_to_html_node(block)
+    raise ValueError("Invalid block type")
 
 
 def text_to_children(text: str):
@@ -60,9 +67,11 @@ def text_to_children(text: str):
 
 
 def paragraph_block_type_to_html_node(block: str):
+    print(block)
     lines = block.split("\n")
     paragraph = (" ").join(lines)
     children = text_to_children(paragraph)
+    print(children)
     return ParentNode("p", children)
 
 def heading_block_type_to_html_node(block: str):

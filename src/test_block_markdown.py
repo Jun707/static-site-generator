@@ -1,4 +1,4 @@
-from block_markdown import markdown_to_blocks, block_to_block_type, ul_block_type, block_type_code, block_type_heading, block_type_ordered_list, block_type_paragraph, block_type_quote, block_type_unordered_list
+from block_markdown import markdown_to_blocks, block_to_block_type, markdown_to_html_node, paragraph_block_type_to_html_node, block_type_code, block_type_heading, block_type_ordered_list, block_type_paragraph, block_type_quote, block_type_unordered_list
 import unittest
 
 class test_block_markdown(unittest.TestCase):
@@ -34,6 +34,14 @@ This is the same paragraph on a new line
         self.assertEqual(block_to_block_type(block), block_type_ordered_list)
         block = "paragraph"
         self.assertEqual(block_to_block_type(block), block_type_paragraph)
+
+    def test_paragraph_block_to_html_node(self):
+        md = """This is **bolded** paragraph"""
+        html_content = "<div><p>This is <b>bolded</b> paragraph</p></div>"
+        paragraph_block = markdown_to_html_node(md)
+        res = paragraph_block.to_html()
+        self.assertEqual(res, html_content)
+
 
 if __name__ == "__main__":
     unittest.main()

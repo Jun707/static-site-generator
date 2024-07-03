@@ -35,39 +35,50 @@ def split_nodes_delimiter(old_nodes, delimiter, text_node):
 def split_nodes_image(old_nodes):
     res = []
     for node in old_nodes:
-        sub_string = []
-
-        matches = extract_markdown_images(node.text)
-        sub_text = node.text
-        if not matches:
-            sub_string.append(node)
-        else:
-            for i in matches:
-                sub_text = sub_text.split(f"![{i[0]}]({i[1]})", 1)
-                sub_string.append(TextNode(sub_text[0], text_type_text))
-                sub_string.append(TextNode(i[0], text_type_image, i[1]))
-                if len(sub_text) >= 1:
-                    sub_text = sub_text[1]
-        res.extend(sub_string)
+        if node.text_type != text_type_text:
+            res.append(node)
+            continue
+            
+        text = node.text
+        matches = extract_markdown_images(text)
+        if not len(matches):
+            res.append(node)
+            continue
+        
+        for i in matches:
+            sub_string = text.split(f"![{i[0]}]({i[1]})", 1)
+            if len(sub_string) != 2:
+                raise ValueError("Invalid markdown format, image tag is not closed")
+            if sub_string[0]:
+                res.append(TextNode(sub_string[0], text_type_text))
+            res.append(TextNode(i[0], text_type_image, i[1]))
+            text = sub_string[1]               
+        if text:
+            res.append(TextNode(text, text_type_text))
     return res
 
 def split_nodes_link(old_nodes):
     res = []
     for node in old_nodes:
-        sub_string = []
-
-        matches = extract_markdown_link(node.text)
-        sub_text = node.text
-        if not matches:
-            sub_string.append(node)
-        else:
-            for i in matches:
-                sub_text = sub_text.split(f"[{i[0]}]({i[1]})", 1)
-                sub_string.append(TextNode(sub_text[0], text_type_text))
-                sub_string.append(TextNode(i[0], text_type_link, i[1]))
-                if len(sub_text) >= 1:
-                    sub_text = sub_text[1]
-        res.extend(sub_string)
+        if node.text_type != text_type_text:
+            res.append(node)
+            continue
+        text = node.text
+        matches = extract_markdown_link(text)
+        if not len(matches):
+            res.append(node)
+            continue
+        
+        for i in matches:
+            sub_string = text.split(f"[{i[0]}]({i[1]})", 1)
+            if len(sub_string) != 2:
+                raise ValueError("Invalid markdown format, link tag is not closed")
+            if sub_string[0]:
+                res.append(TextNode(sub_string[0], text_type_text))
+            res.append(TextNode(i[0], text_type_link, i[1]))
+            text = sub_string[1]               
+        if text:
+            res.append(TextNode(text, text_type_text))
     return res
 
 def text_to_textnodes(text):

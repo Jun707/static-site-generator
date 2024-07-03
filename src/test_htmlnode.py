@@ -25,7 +25,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_parentNode_to_html_leafNode_case(self):
         node = ParentNode(
             "p",
-            None,
             [
                 LeafNode("b", "Bold text"),
                 LeafNode(None, "Normal text"),
@@ -39,7 +38,6 @@ class TestHTMLNode(unittest.TestCase):
         props = {"href": "https://www.google.com"}
         node = ParentNode(
             "p",
-            None,
             [
                 LeafNode("b", "Bold text"),
                 LeafNode(None, "Normal text"),
@@ -54,11 +52,9 @@ class TestHTMLNode(unittest.TestCase):
     def test_parentNode_to_html_parentNode_nesting(self):
         node = ParentNode(
             "div",
-            None,
             [
                 ParentNode(
                     "p",
-                    None,
                     [
                         LeafNode("b", "Bold text"),
                         LeafNode(None, "Normal text"),

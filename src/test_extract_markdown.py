@@ -44,6 +44,20 @@ class test_extract_markdown(unittest.TestCase):
                 ),
             ]
         )
+    
+    def test_split_nodes_single_image(self):
+        node = TextNode(
+            "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) last paragraph",
+            text_type_text,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertEqual(new_nodes, 
+            [
+                TextNode("This is text with an ", text_type_text),
+                TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                TextNode(" last paragraph", text_type_text),
+            ]
+        )
 
     def test_split_nodes_link(self):
         node = TextNode("This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)", text_type_text)
@@ -58,11 +72,29 @@ class test_extract_markdown(unittest.TestCase):
                 ),
             ]
         )
+
+    def test_split_nodes_single_link(self):
+        node = TextNode("This is a single link test [link](https://www.google.com) and a paragraph", text_type_text)
+        new_nodes = split_nodes_link([node])
+        self.assertEqual(new_nodes, 
+            [
+                TextNode("This is a single link test ", text_type_text),
+                TextNode("link", text_type_link, "https://www.google.com"),
+                TextNode(" and a paragraph", text_type_text)
+            ]
+        )
+    
+    # def test_split_nodes_link_fail(self):
+    #     node = TextNode("This is [almost correct(https:www.google.com)", text_type_text)
+    #     with self.assertRaises(ValueError) as node_error:
+    #         split_nodes_link([node])
+    #     self.assertEqual(str(node_error.exception), "Invalid markdown format, link tag is not closed")
+
     def test_text_to_textnodes(self):
         nodes = text_to_textnodes(
             "This is `text` with an *italic*"
         )
-        self.assertListEqual(
+        self.assertEqual(
             [
                 TextNode("This is ", text_type_text),
                 TextNode("text", text_type_code),
@@ -72,4 +104,19 @@ class test_extract_markdown(unittest.TestCase):
             nodes,
         )
 
-
+    def test_text_to_textnodes_with_images(self):
+        nodes = text_to_textnodes(
+            "This is a **paragraph** with `image` ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) last paragraph"
+        )
+        self.assertEqual(
+            [
+                TextNode("This is a ", text_type_text),
+                TextNode("paragraph", text_type_bold),
+                TextNode(" with ", text_type_text),
+                TextNode("image", text_type_code),
+                TextNode(" ", text_type_text),
+                TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                TextNode(" last paragraph", text_type_text)
+            ],
+            nodes
+        )
