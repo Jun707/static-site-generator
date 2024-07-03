@@ -45,9 +45,9 @@ def markdown_to_html_node(markdown: str):
 def block_to_html_node(block: str):
     block_type = block_to_block_type(block)
     if block_type == block_type_paragraph:
-        return paragraph_block_type(block)
+        return paragraph_block_type_to_html_node(block)
     if block_type == block_type_heading:
-        return heading_block_type(block)
+        return heading_block_type_to_html_node(block)
 
 
 def text_to_children(text: str):
@@ -59,13 +59,13 @@ def text_to_children(text: str):
     return children
 
 
-def paragraph_block_type(block: str):
+def paragraph_block_type_to_html_node(block: str):
     lines = block.split("\n")
     paragraph = (" ").join(lines)
     children = text_to_children(paragraph)
     return ParentNode("p", children)
 
-def heading_block_type(block: str):
+def heading_block_type_to_html_node(block: str):
     level = 0
     for char in block:
         if char == "#":
@@ -77,10 +77,36 @@ def heading_block_type(block: str):
     
     return ParentNode(f"h{level}", children)
 
-def code_block_type(block: str):
+def code_block_type_to_html_node(block: str):
     text = block[4: -3]
     children = text_to_children(text)
     code_block = ParentNode("code", children)
     return ParentNode("pre", code_block)
 
+def quote_block_type_to_html_node(block: str):
+    lines = block.split("\n")
+    new_lines = []
+    for line in lines:
+        text = line.lstrip(">").strip()
+        new_lines.append(text)
+    content = (" ").join(new_lines)
+    children = text_to_children(content)
+    return ParentNode("blockquote", children)
 
+def ul_block_type_to_html_node(block: str):
+    lines = block.split("\n")
+    html_li = []
+    for line in lines:
+        text = line[2:]
+        children = text_to_children(text)
+        html_li.append(ParentNode("li", children))
+    return ParentNode("ul", html_li)
+
+def ol_block_type_to_html_node(block: str):
+    lines = block.split("\n")
+    html_li = []
+    for line in lines:
+        text = line[3:]
+        children = text_to_children(text)
+        html_li.append(ParentNode("li",children))
+    return ParentNode("ol", html_li)
