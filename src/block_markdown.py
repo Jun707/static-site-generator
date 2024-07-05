@@ -48,12 +48,14 @@ def block_to_html_node(block: str):
         return paragraph_block_type_to_html_node(block)
     if block_type == block_type_heading:
         return heading_block_type_to_html_node(block)
-    if block_type == block_type_quote(block):
+    if block_type == block_type_quote:
         return quote_block_type_to_html_node(block)
-    if block_type == block_type_unordered_list(block):
+    if block_type == block_type_unordered_list:
         return ul_block_type_to_html_node(block)
-    if block_type == block_type_ordered_list(block):
+    if block_type == block_type_ordered_list:
         return ol_block_type_to_html_node(block)
+    if block_type == block_type_code:
+        return code_block_type_to_html_node(block)
     raise ValueError("Invalid block type")
 
 
@@ -67,11 +69,9 @@ def text_to_children(text: str):
 
 
 def paragraph_block_type_to_html_node(block: str):
-    print(block)
     lines = block.split("\n")
     paragraph = (" ").join(lines)
     children = text_to_children(paragraph)
-    print(children)
     return ParentNode("p", children)
 
 def heading_block_type_to_html_node(block: str):
@@ -87,10 +87,10 @@ def heading_block_type_to_html_node(block: str):
     return ParentNode(f"h{level}", children)
 
 def code_block_type_to_html_node(block: str):
-    text = block[4: -3]
+    text = block[3:-3]
     children = text_to_children(text)
     code_block = ParentNode("code", children)
-    return ParentNode("pre", code_block)
+    return ParentNode("pre", [code_block])
 
 def quote_block_type_to_html_node(block: str):
     lines = block.split("\n")
