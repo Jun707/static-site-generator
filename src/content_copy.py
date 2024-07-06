@@ -40,15 +40,18 @@ def generate_page(from_path, template_path, des_path):
     header = extract_title(from_path_content)
     # parse md to html node
     html_node = markdown_to_html_node(from_path_content)
-    print(html_node)
     # parse html node to html code
-    html_content = html_node.to_html()
+    body_content = html_node.to_html()
     t = open(template_path, "r")
     template_path_content = t.read()
     t.close()
-    print(header)
-    print(html_content)
     template_path_content = template_path_content.replace("{{ Title }}", header)
-    print(template_path_content)
+    template_path_content = template_path_content.replace("{{ Content }}", body_content)
+    dir_list = des_path.split("/")
+    dir = "/".join(dir_list[:-1])
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    with open(des_path, "w") as f:
+        f.write(template_path_content)
     
 

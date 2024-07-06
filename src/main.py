@@ -11,6 +11,6 @@ def main():
 # """
 #     res = extract_title(markdown)
 #     print(res)
-      generate_page("./static/index.md", "./template.html", "./public")
+      generate_page("./static/index.md", "./template.html", "./public/index.html")
                 
 main()
