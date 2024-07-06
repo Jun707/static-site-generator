@@ -39,7 +39,6 @@ def markdown_to_html_node(markdown: str):
     for block in blocks:
         html_node = block_to_html_node(block)
         children.append(html_node)
-        print(children)
     return ParentNode("div", children, None)
 
 def block_to_html_node(block: str):

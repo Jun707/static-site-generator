@@ -6,7 +6,7 @@ class HTMLNode:
         self.props = props
 
     def to_html(self):
-        raise NotImplementedError
+        raise NotImplementedError("Missing to_html method")
     
     def props_to_html(self):
         res = ""
@@ -25,7 +25,8 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
-        if not self.value:
+        print(self.value)
+        if self.value is None:
             raise ValueError("Invalid value: no value")
         if not self.tag:
             return self.value
