@@ -1,4 +1,4 @@
-from htmlnode import ParentNode, LeafNode
+from htmlnode import ParentNode
 from textnode import text_node_to_html_node
 from extract_markdown import text_to_textnodes
 
