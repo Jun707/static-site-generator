@@ -13,7 +13,6 @@ A static site generator built from scratch in Python, similar to Jekyll, Hugo, o
 ## Requirements
 
 - Python 3.7 or higher
-- Required Python packages (see `requirements.txt`)
 
 ## Installation
 
