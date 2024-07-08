@@ -6,8 +6,6 @@ A static site generator built from scratch in Python, similar to Jekyll, Hugo, o
 
 - **Markdown Support**: Write your content in Markdown.
 - **Templates**: Use HTML templates to define the layout of your site.
-- **Static File Handling**: Easily manage and include static assets like images, CSS, and JavaScript.
-- **Configuration**: Customize your site with a simple configuration file.
 - **CLI Tool**: Command-line interface for building and managing your site.
 
 ## Requirements
