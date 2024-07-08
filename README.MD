@@ -18,7 +18,7 @@ A static site generator built from scratch in Python, similar to Jekyll, Hugo, o
 ## Installation
 
 **Clone the repository:**
-    ```bash
+    ```
     git clone https://github.com/Jun707/static-site-generator.git
     cd static-site-generator
     ```
@@ -28,6 +28,6 @@ A static site generator built from scratch in Python, similar to Jekyll, Hugo, o
 ### Create a New Site
 
 To create a new site, use the following command:
-    ```bash
+    ```
     ./main.sh
     ```
